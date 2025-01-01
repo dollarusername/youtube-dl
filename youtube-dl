@@ -1,0 +1,28 @@
+#!/opt/homebrew/Caskroom/miniconda/base/envs/youtube/bin/python3
+import argparse
+import yt_dlp
+
+def download_video(url):
+    try:
+        # Set up yt-dlp options
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
+            'outtmpl': '%(title)s.%(ext)s',  # Save with title as filename
+            'max_retries': 8,  # Increase retries to handle temporary issues
+        }
+        
+        # Create a YouTube downloader object
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+        
+        print("Download complete.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Download YouTube videos")
+    parser.add_argument("url", help="URL of the YouTube video to download")
+    
+    args = parser.parse_args()
+    
+    download_video(args.url)
